@@ -4,7 +4,7 @@ const UserService = {
     createUser(knex, newUser) {
         return knex
             .insert(newUser)
-            .into('users')
+            .into('udown_users')
             .returning('*')
             .then(rows => {
                 return rows[0]
@@ -12,16 +12,33 @@ const UserService = {
     },
 
     // Read
-    getUser(kenx) {
+    getUser(knex) {
+        console.log('trying to GET')
         return knex
             .select('*')
-            .from('users')
+            .from('udown_users')
+    },
+
+    getById(knex, id) {
+        return knex
+            .from('udown_users')
+            .select('*')
+            .where({ id })
+            .first()
+    },
+
+    getUserByUsername(knex, username) {
+        return knex
+            .from('udown_users')
+            .select('*')
+            .where({ username })
+            .first()
     },
 
     // Update
     updateUser(knex, id, newUserFields) {
         return knex
-            .from('users')
+            .from('udown_users')
             .where({ id })
             .update(newUserFields)
     },
@@ -29,7 +46,7 @@ const UserService = {
     // Delete
     deleteUser(knex, id) {
         return knex
-            .from('users')
+            .from('udown_users')
             .where({ id })
             .delete()
     }
