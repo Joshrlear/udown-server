@@ -19,7 +19,7 @@ signupRouter
     .route('/')
     .post(jsonParser, (req, res, next) => {
         const { username, password, phone_number } = req.body
-        const newUser = { username, password, phone_number }
+        const newUser = { username, password }
 
         // check for empty fields
         for (const [key, value] of Object.entries(newUser))
@@ -53,6 +53,14 @@ signupRouter
                         // create new user and return json
                         UserService.createUser(knexInstance, user)
                             .then(user => {
+                                const isSecure = req.app.get('env') != 'development'
+                                console.log('here', user)
+                                res.cookie('user_id', user.id, {
+                                    httpOnly: true,
+                                    secure: isSecure,
+                                    signed: true
+                                })
+                                console.log('again', user.id)
                                 res
                                     .status(201)
                                     .json(serializeUser(user))

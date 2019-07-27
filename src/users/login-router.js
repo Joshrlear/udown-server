@@ -20,7 +20,7 @@ loginRouter
     .post(jsonParser, (req, res, next) => {
         const { username, password } = req.body
         const newUser = { username, password }
-
+        
         // check for empty fields
         for (const [key, value] of Object.entries(newUser))
             if (value == null)
@@ -48,8 +48,9 @@ loginRouter
                                     signed: true
                                 })
                                 res.json({
+                                    id: user.id,
                                     message: 'Logged in!'
-                                })
+                                }) 
                             }
                             // password doesn't match
                             else {

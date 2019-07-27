@@ -5,9 +5,12 @@ const cors = require('cors')
 const helmet = require('helmet')
 const cookieParser = require('cookie-parser')
 const { NODE_ENV } = require('./config')
+const fileUpload = require('express-fileupload');
+const authMiddleware = require('./users/middleware')
 const loginRouter = require('./users/login-router')
 const signupRouter = require('./users/signup-router')
 const profileRouter = require('./users/profile-router')
+const imagesRouter = require('./images/images-router')
 
 const app = express()
 
@@ -16,17 +19,18 @@ const morganOption = (NODE_ENV === 'production')
   : 'common';
 
 app.use(morgan(morganOption))
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
 app.use(helmet())
+app.use(fileUpload())
 app.use(cookieParser(process.env.COOKIE_SECRET))
-
-app.get('/', (req, res) => {
-    res.send('Hello, world!')
-})
 
 app.use('/login', loginRouter)
 app.use('/signup', signupRouter)
 app.use('/profile', profileRouter)
+app.use('/images', imagesRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response

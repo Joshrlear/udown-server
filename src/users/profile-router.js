@@ -1,29 +1,43 @@
 const path = require('path');
 const express = require('express');
 const xss = require('xss');
+const uuidv4 = require('uuid/v4');
 const UserService = require('./users-service');
+const ImageService = require('../images/images-service');
 
 const profileRouter = express.Router();
-const jsonParser = express.json();
 
-const serializeUser = user => ({
-    id: user.id,
-    username: xss(user.username),
-    password: xss(user.password),
-    phone_number: xss(user.phone_number),
-    date_created: user.date_created,
-});
+const serializeImage = image => ({
+    id: image.id,
+    image: image,
+    date_created: image.date_created,
+    user_id: image.user_id
+})
 
+// Upload image
 profileRouter
     .route('/')
-    .get((req, res, next) => {
-        console.log('running')
-        const knexInstance = req.app.get('db')
-        UserService.getUser(knexInstance)
-            .then(user => {
-                res.json(user.map(serializeUser))
+    .post((req, res, next) => {
+        const user_id = req.signedCookies.user_id
+        const image = Buffer.from(req.files.imageUpload.data).toString('base64')
+        const newImage = { image, user_id }
+        console.log('here', user_id)
+        // no file selected
+        if (!image) {
+            next(new Error('No file selected'))
+        }
+        // Good to upload
+        else {
+            ImageService.createImage(
+                req.app.get('db'),
+                newImage
+            )
+            .then(image => {
+                    res
+                        .status(201)
             })
             .catch(next)
-    })
+        }
+    });
 
     module.exports = profileRouter

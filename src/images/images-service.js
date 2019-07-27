@@ -1,10 +1,10 @@
-const UserService = {
+const imageService = {
 
     // Create
-    createUser(knex, newUser) {
+    createImage(knex, newImage) {
         return knex
-            .insert(newUser)
-            .into('udown_users')
+            .insert(newImage)
+            .into('images')
             .returning('*')
             .then(rows => {
                 return rows[0]
@@ -12,43 +12,43 @@ const UserService = {
     },
 
     // Read
-    getUser(knex) {
+    getImage(knex) {
         return knex
             .select('*')
-            .from('udown_users')
+            .from('images')
     },
 
     getById(knex, id) {
         return knex
-            .from('udown_users')
+            .from('images')
             .select('*')
             .where({ id })
             .first()
     },
 
-    getUserByUsername(knex, username) {
+    getImageByUser_id(knex, user_id) {
         return knex
-            .from('udown_users')
-            .select('*')
-            .where({ username })
+            .from('images')
+            .select('image')
+            .where({ user_id })
             .first()
     },
 
     // Update
-    updateUser(knex, id, newUserFields) {
+    updateImage(knex, id, newImageFields) {
         return knex
-            .from('udown_users')
+            .from('images')
             .where({ id })
-            .update(newUserFields)
+            .update(newImageFields)
     },
 
     // Delete
-    deleteUser(knex, id) {
+    deleteImage(knex, id) {
         return knex
-            .from('udown_users')
+            .from('images')
             .where({ id })
             .delete()
     }
 }
 
-module.exports = UserService;
+module.exports = imageService;
