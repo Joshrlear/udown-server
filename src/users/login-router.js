@@ -3,6 +3,7 @@ const express = require('express');
 const xss = require('xss');
 const bcrypt = require('bcrypt');
 const UserService = require('./users-service');
+const config = require('../config');
 
 const loginRouter = express.Router();
 const jsonParser = express.json();
@@ -47,6 +48,7 @@ loginRouter
                                     secure: isSecure,
                                     signed: true
                                 })
+                                console.log({ "cookies": req.signedCookies })
                                 res.json({
                                     id: user.id,
                                     message: 'Logged in!'

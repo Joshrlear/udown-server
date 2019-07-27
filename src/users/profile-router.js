@@ -3,7 +3,7 @@ const express = require('express');
 const xss = require('xss');
 const uuidv4 = require('uuid/v4');
 const UserService = require('./users-service');
-const ImageService = require('../images/images-service');
+const ImageService = require('./images-service');
 
 const profileRouter = express.Router();
 
@@ -14,7 +14,7 @@ const serializeImage = image => ({
     user_id: image.user_id
 })
 
-// Upload image
+// CREATE: Upload image
 profileRouter
     .route('/')
     .post((req, res, next) => {
@@ -39,5 +39,33 @@ profileRouter
             .catch(next)
         }
     });
+
+    // READ: display profile image
+profileRouter
+    .route('images/:user_id')
+    .get((req, res, next) => {
+        const user_id = req.headers.user_id
+        console.log(user_id)
+        
+        if (!user_id) {
+            next(new Error('No user id specified'))
+        }
+        else {
+            ImageService.getImageByUser_id(
+                req.app.get('db'),
+                user_id
+            )
+            .then(image => {
+                if (!image) {
+                    res.status(201)
+                }
+                else {
+                    res
+                    .status(200)
+                    .json(serializeImage(image))
+                }
+            })
+        }
+    })
 
     module.exports = profileRouter

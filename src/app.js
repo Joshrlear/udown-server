@@ -10,7 +10,7 @@ const authMiddleware = require('./users/middleware')
 const loginRouter = require('./users/login-router')
 const signupRouter = require('./users/signup-router')
 const profileRouter = require('./users/profile-router')
-const imagesRouter = require('./images/images-router')
+const imagesRouter = require('./users/images-router')
 
 const app = express()
 
@@ -29,8 +29,8 @@ app.use(cookieParser(process.env.COOKIE_SECRET))
 
 app.use('/login', loginRouter)
 app.use('/signup', signupRouter)
-app.use('/profile', profileRouter)
-app.use('/images', imagesRouter)
+app.use('/profile', authMiddleware.isLoggedIn, profileRouter)
+//app.use('/images', imagesRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response

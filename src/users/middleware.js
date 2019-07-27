@@ -1,5 +1,5 @@
 function isLoggedIn(req, res, next) {
-    console.log(req.signedCookies)
+    //console.log('is this working?', req)
     if (req.signedCookies.user_id) {
         next()
     }
