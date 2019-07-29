@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const xss = require('xss');
 const uuidv4 = require('uuid/v4');
+const { allowAccess } = require('./middleware')
 const UserService = require('./users-service');
 const ImageService = require('./images-service');
 
@@ -16,25 +17,28 @@ const serializeImage = image => ({
 
 // CREATE: Upload image
 profileRouter
-    .route('/')
-    .post((req, res, next) => {
+    .route('/:user_id/images')
+    .post(allowAccess, (req, res, next) => {
         const user_id = req.signedCookies.user_id
         const image = Buffer.from(req.files.imageUpload.data).toString('base64')
         const newImage = { image, user_id }
         console.log('here', user_id)
         // no file selected
         if (!image) {
+            console.log('no image')
             next(new Error('No file selected'))
         }
         // Good to upload
         else {
+            console.log('Good to go')
             ImageService.createImage(
                 req.app.get('db'),
                 newImage
             )
             .then(image => {
-                    res
-                        .status(201)
+                console.log('here')
+                return res
+                    .status(201)
             })
             .catch(next)
         }
@@ -42,29 +46,34 @@ profileRouter
 
     // READ: display profile image
 profileRouter
-    .route('images/:user_id')
-    .get((req, res, next) => {
+    .route('/:user_id/images')
+    .get(allowAccess, (req, res, next) => {
         const user_id = req.headers.user_id
-        console.log(user_id)
+        console.log(`now we're here`, user_id)
         
         if (!user_id) {
+            console.log('no user_id')
             next(new Error('No user id specified'))
         }
         else {
+            console.log('user id: ', user_id, 'is all good!')
             ImageService.getImageByUser_id(
                 req.app.get('db'),
                 user_id
             )
             .then(image => {
                 if (!image) {
+                    console.log('no image :(')
                     res.status(201)
                 }
                 else {
+                    console.log('here comes that info you wanted!')
                     res
                     .status(200)
                     .json(serializeImage(image))
                 }
             })
+            .catch(next)
         }
     })
 

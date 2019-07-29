@@ -35,6 +35,7 @@ loginRouter
             )
             .then(user => {
                 // user found
+
                 if (user) {
                     bcrypt
                         .compare(password, user.password)
@@ -43,12 +44,13 @@ loginRouter
                             if (result) {
                                 // setting "set-cookie" header
                                 const isSecure = req.app.get('env') != 'development'
+
                                 res.cookie('user_id', user.id, {
                                     httpOnly: true,
                                     secure: isSecure,
                                     signed: true
                                 })
-                                console.log({ "cookies": req.signedCookies })
+
                                 res.json({
                                     id: user.id,
                                     message: 'Logged in!'

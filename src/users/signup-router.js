@@ -18,10 +18,10 @@ const serializeUser = user => ({
 signupRouter
     .route('/')
     .post(jsonParser, (req, res, next) => {
-        const { username, password, phone_number } = req.body
+        const { username, password } = req.body
         const newUser = { username, password }
 
-        // check for empty fields
+        // check for empty fields / should have validated on client side
         for (const [key, value] of Object.entries(newUser))
             if (value == null)
                 return res.status(400).json({
@@ -34,7 +34,6 @@ signupRouter
             username
         )
         .then(user => {
-            console.log('user', user)
 
             // if user not found in db, create new user
             if (!user) {
@@ -46,21 +45,21 @@ signupRouter
                     .then((hash) => {
                         const user = {
                             username: username,
-                            password: hash,
-                            phone_number: phone_number
+                            password: hash
                         }
 
                         // create new user and return json
                         UserService.createUser(knexInstance, user)
                             .then(user => {
+
                                 const isSecure = req.app.get('env') != 'development'
-                                console.log('here', user)
+
                                 res.cookie('user_id', user.id, {
                                     httpOnly: true,
                                     secure: isSecure,
                                     signed: true
                                 })
-                                console.log('again', user.id)
+
                                 res
                                     .status(201)
                                     .json(serializeUser(user))
