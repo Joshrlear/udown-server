@@ -8,9 +8,11 @@ const { NODE_ENV } = require('./config')
 const fileUpload = require('express-fileupload');
 const { isLoggedIn } = require('./users/middleware')
 const loginRouter = require('./users/login-router')
+const logoutRouter = require('./users/logout-router')
 const signupRouter = require('./users/signup-router')
 const profileRouter = require('./users/profile-router')
-const imagesRouter = require('./users/images-router')
+const homeRouter = require('./Home/Home-Router')
+const textRouter = require('./text/text-router')
 
 const app = express()
 
@@ -33,10 +35,13 @@ app.use('/isLoggedIn', (req, res, next) => {
     }
     else { res.json({ 'isLoggedIn': false })}
 })
+
+app.use('/home', homeRouter)
 app.use('/login', loginRouter)
+app.use('/logout', logoutRouter)
 app.use('/signup', signupRouter)
 app.use('/profile', isLoggedIn, profileRouter)
-//app.use('/images', imagesRouter)
+app.use('/text', textRouter)
 
 app.use(function(error, req, res, next) {
     let response

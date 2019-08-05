@@ -64,13 +64,14 @@ profileRouter
             .then(image => {
                 if (!image) {
                     console.log('no image :(')
-                    res.status(201)
+                    return res
+                        .status(201)
                 }
                 else {
                     console.log('here comes that info you wanted!')
-                    res
-                    .status(200)
-                    .json(serializeImage(image))
+                    return res
+                        .status(200)
+                        .json(serializeImage(image))
                 }
             })
             .catch(next)
