@@ -15,6 +15,10 @@ const serializeImage = image => ({
     user_id: image.user_id
 })
 
+/* profileRouter
+    .route('/:user_id')
+    . */
+
 // CREATE: Upload image
 profileRouter
     .route('/:user_id/images')
@@ -42,11 +46,9 @@ profileRouter
             })
             .catch(next)
         }
-    });
+    })
 
     // READ: display profile image
-profileRouter
-    .route('/:user_id/images')
     .get(allowAccess, (req, res, next) => {
         const user_id = req.headers.user_id
         console.log(`now we're here`, user_id)

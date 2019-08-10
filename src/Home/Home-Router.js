@@ -19,43 +19,32 @@ const homeRouter = express.Router()
 // google maps api
 homeRouter
     .get('/map', (req, res, next) => {
+        const textSearch = "free tennis court in san diego"
+        const location = "32.8180,-117.0560"
+        const radius = 24000
         request({
-            uri: `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${textSearch}&location=${location}&radius=${radius}&key=${config.GOOGLE_PLACES_API}`,
+            uri: `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${textSearch}&location=${location}&radius=${radius}&key=${config.GOOGLE_MAPS_API_KEY}`,
         })
         .pipe(res)
         console.log('working')
+    })
 
 
-
-
-
-
-
-        /* const request = `https://maps.googleapis.com/maps/api/place/textsearch/xml?query=tennis+in+san+diego+ca&key=${config.GOOGLE_PLACES_API}`
-        const fetch_request = await fetch(request, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+// This router should be all good but I am receiving a 403 unauthorized error saying
+// that I have met my quota indicated by the icon in the Network > preview
+// I don't seem to have exceeded anyb quota when looking on google cloud console
+// I have contacted sales to ask about it... consider removing photos for now.
+homeRouter
+    .post('/location-photo', (req, res, next) => {
+        console.log('home_router /location-photo request is running')
+        const { photo, width } = req.headers
+        console.log('photo:', photo, 'width:', width)
+        console.log(config.GOOGLE_PLACES_API)
+        request({
+            uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${width}&photoreference=${photo}&key=${config.GOOGLE_PLACES_API}`
         })
         .pipe(res)
-        .catch() */
-        //const response = await fetch_request
-        //const resJson = await response.json()
-        console.log(res)
-        //res.send(resJson)
-        //response.body._outBuffer.map(buffer => responses.push(decoder.write(buffer)))
-        //console.log(response)
-
-        /*const { GOOGLE_PLACES_ENDPOINT, GOOGLE_PLACES_API } = config
-        const request = GOOGLE_PLACES_ENDPOINT.split(',')
-        request.splice(1, 0, config.GOOGLE_PLACES_API)
-        request.join('')
-         const fetch_request = await fetch(request)
-        await fetch_request.res
-        console.log(res)
-        return res 
-        })*/
+        //console.log(res)
     })
 
 module.exports = homeRouter

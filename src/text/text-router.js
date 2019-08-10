@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const Nexmo = require('nexmo')
 const socketio = require('socket.io')
 const config = require('../config')
+const { createRoomName } = require('../../functions')
 
 const textRouter = express.Router()
 
@@ -14,11 +15,18 @@ const nexmo = new Nexmo({
 textRouter
     .route('/')
     .post((req, res, next) => {
+        const { username, location } = req.headers
+        const roomName = createRoomName()
         const number = '16195076807'
-        const text = 'Test message from Nexmo and Nodejs!'
-        console.log('trying to send text')
+        const text = `${username} is inviting you to join their event at ${location}. Use the link to join!
+                      http://localhost:3000/chat/${roomName}`
 
-        nexmo.message.sendSms(
+        res.json({ username, roomName })
+        console.log('trying to send text')
+        console.log(username, location, roomName)
+        console.log(text)
+
+        /* nexmo.message.sendSms(
             '18382035015', number, text, { type: 'unicode' },
             (err, responseData) => {
                 if (err) {
@@ -36,7 +44,7 @@ textRouter
                     return res.send(data)
                 }
             }
-        )
+        ) */
     })
 
 module.exports = textRouter

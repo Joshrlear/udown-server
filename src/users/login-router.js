@@ -53,6 +53,7 @@ loginRouter
 
                                 res.json({
                                     id: user.id,
+                                    username: username,
                                     message: 'Logged in!'
                                 }) 
                             }
