@@ -3,7 +3,7 @@ module.exports = {
     NODE_ENV: process.env.NODE_ENV || 'development',
     DB_URL: process.env.DB_URL || 'postgresql://josh-lear:password@localhost/udown',
     //CHAT_PORT: 'http://localhost:5000',
-    GOOGLE_PLACES_API: process.env.GOOGLE_PLACES_API || 'AIzaSyA791_vzW7k9sk4W4jli9JqaXxLmPk1Y6A',
+    GOOGLE_PLACES_API: process.env.GOOGLE_PLACES_API,
     GOOGLE_PLACES_ENDPOINT: process.env.GOOGLE_PLACES_ENDPOINT,
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     NEXMO_ENDPOINT: process.env.NEXMO_ENDPOINT,
