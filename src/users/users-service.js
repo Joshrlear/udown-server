@@ -18,12 +18,28 @@ const UserService = {
             .from('udown_users')
     },
 
-    getById(knex, id) {
+    getUserInfoById(knex, user_id, field) {
         return knex
             .from('udown_users')
-            .select('*')
+            .select({ field })
+            .where({ user_id })
+            .first()
+    },
+
+    getById(knex, id, field) {
+        return knex
+            .from('udown_users')
+            .select({ field })
             .where({ id })
             .first()
+    },
+
+    getOtherUsersById(knex, id, field) {
+        return knex
+            .from('udown_users')
+            .select({ field })
+            .whereNot({ id })
+            .whereNotNull(field)
     },
 
     getUserByUsername(knex, username) {
@@ -35,11 +51,11 @@ const UserService = {
     },
 
     // Update
-    updateUser(knex, id, newUserFields) {
+    updateUser(knex, id, newUserField) {
         return knex
             .from('udown_users')
             .where({ id })
-            .update(newUserFields)
+            .update(newUserField)
     },
 
     // Delete

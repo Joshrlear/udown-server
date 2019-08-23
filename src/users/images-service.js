@@ -33,6 +33,14 @@ const imageService = {
             .where({ user_id })
             .first()
     },
+    
+    getImageIdByUser_id(knex, user_id){
+        return  knex
+            .from('images')
+            .select('id')
+            .where({ user_id })
+            .first()
+    },
 
     // Update
     updateImage(knex, id, newImageFields) {
@@ -40,6 +48,10 @@ const imageService = {
             .from('images')
             .where({ id })
             .update(newImageFields)
+            .returning('*')
+            .then(rows => {
+                return rows[0]
+            })
     },
 
     // Delete

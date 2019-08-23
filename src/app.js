@@ -29,6 +29,7 @@ app.use(helmet())
 app.use(fileUpload())
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
+
 app.use('/isLoggedIn', (req, res, next) => {
     if (req.signedCookies.user_id == req.headers.user_id) {
         res.json({ 'isLoggedIn': true })
