@@ -12,6 +12,7 @@ const jsonParser = express.json();
 
 const NEXMO_API_KEY = process.env.NEXMO_API_KEY;
 const NEXMO_API_SECRET = process.env.NEXMO_API_SECRET;
+const NEXMO_FROM_NUMBER = process.env.NEXMO_FROM_NUMBER;
 
 const nexmo = new Nexmo({
     apiKey: NEXMO_API_KEY,
@@ -32,7 +33,7 @@ textRouter
 
         number.map(userPhone => {
             nexmo.message.sendSms(
-            '18382035015', `1${userPhone}`, text, { type: 'unicode' },
+                NEXMO_FROM_NUMBER, `1${userPhone}`, text, { type: 'unicode' },
             (err, responseData) => {
                 if (err) {
                     console.log(err)
