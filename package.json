@@ -11,7 +11,12 @@
     "predeploy": "npm audit",
     "deploy": "git push heroku master"
   },
-  "keywords": [],
+  "keywords": [
+    "nexmo",
+    "node.js",
+    "quickstart",
+    "sms"
+  ],
   "engines": {
     "node": "10.15.3"
   },
