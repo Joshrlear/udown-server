@@ -20,7 +20,6 @@ server.listen(PORT, () => {
 io.on('connection', socket => {
   
   socket.on('join_room', data => {
-    console.log('data', data)
     console.log(`joining chat at: ${data.room}`)
 
     // it's looping through twice for some reason
@@ -35,24 +34,16 @@ io.on('connection', socket => {
 
     //io.to(data.room).emit(`Chat started for:\n${data.loc.name}\n${data.loc.address}`)
   })
-
-  /* let chatRoomId
-  socket.on('open_chat_room', value => {
-    chatRoomId = value
-    console.log(chatRoomId)
-  }) */
   
   socket.on('chat_message', ({ room, username, message }) => {
     socket.to('viral-III-35').emit('chat_message', {
       username,
       message,
     })
-    console.log(room, username, message)
   })
 
   socket.on('typing', user => {
     socket.broadcast.emit('typing', user)
-    console.log(user)
   })
   console.log(`Chat Server listening at http://localhost:${PORT}`)
 })

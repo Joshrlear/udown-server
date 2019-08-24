@@ -1,7 +1,7 @@
 const knex = require('knex')
 const request = require('supertest');
 
-describe('POST /', () => {
+describe('GET /', () => {
 
   before('make knex instance', () => {
     const { DB_URL } = require('../src/config')
@@ -12,16 +12,10 @@ describe('POST /', () => {
 
     app.set('db', db)
   })
-  
-  const newUser = {
-      username: 'test',
-      password: 'password'
-  }
 
   it('responds with json object and status 200', (done) => {
     request(app)
-      .post(`/login`)
-      .send(newUser)
+      .get(`/logout`)
       .expect('Content-Type', /json/)
       .expect(res => {
         expect(res.body).to.be.an('object')

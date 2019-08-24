@@ -14,7 +14,7 @@ const nexmo = new Nexmo({
 
 textRouter
     .post('/', jsonParser, (req, res, next) => {
-        console.log('here is body:', req.body)
+
         const { username, location, userPhones } = req.body
         const roomName = createRoomName()
         const number = userPhones
@@ -22,9 +22,7 @@ textRouter
                       http://localhost:3000/chat/${roomName}`
 
         res.json({ username, roomName })
-        console.log('trying to send text')
-        console.log(username, location, roomName, userPhones)
-        console.log(text)
+
 
         number.map(userPhone => {
             nexmo.message.sendSms(

@@ -14,7 +14,6 @@ imagesRouter
     .route('/:user_id')
     .get((req, res, next) => {
         const user_id = req.headers.user_id
-        console.log(user_id)
         
         if (!user_id) {
             next(new Error('No user id specified'))

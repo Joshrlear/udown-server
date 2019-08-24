@@ -22,7 +22,7 @@ const morganOption = (NODE_ENV === 'production')
 
 app.use(morgan(morganOption))
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://udown.joshrlear.now.sh',
     credentials: true
 }))
 app.use(helmet())
@@ -44,12 +44,11 @@ app.use('/signup', signupRouter)
 app.use('/profile', isLoggedIn, profileRouter)
 app.use('/text', textRouter)
 
-app.use(function(error, req, res, next) {
+app.use((error, req, res, next) => {
     let response
     if (NODE_ENV === 'production') {
         response = { error: { message: 'server error' }}
     } else {
-        console.error(error)
         response = { message: error.message, error }
     }
     res.status(error.status || res.statusCode || 500)
