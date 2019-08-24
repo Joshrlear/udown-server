@@ -22,7 +22,7 @@ const morganOption = (NODE_ENV === 'production')
 
 app.use(morgan(morganOption))
 app.use(cors({
-    origin: 'https://udown.joshrlear.now.sh',
+    origin: 'http://localhost:3000',
     credentials: true
 }))
 app.use(helmet())
