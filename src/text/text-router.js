@@ -2,7 +2,7 @@ const express = require('express')
 const Nexmo = require('nexmo')
 const socketio = require('socket.io')
 const config = require('../config')
-const { NODE_ENV } = require('./config')
+const { NODE_ENV } = require('../config')
 const { createRoomName } = require('../../functions')
 
 const textRouter = express.Router()
