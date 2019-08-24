@@ -1,3 +1,5 @@
+require('dotenv').config({path: __dirname + '/../.env'})
+
 const express = require('express')
 const Nexmo = require('nexmo')
 const socketio = require('socket.io')
@@ -11,7 +13,7 @@ const jsonParser = express.json();
 const nexmo = new Nexmo({
     apiKey: config.NEXMO_API_KEY,
     apiSecret: config.NEXMO_API_SECRET
-}, { debug: true })
+})
 
 textRouter
     .post('/', jsonParser, (req, res, next) => {
