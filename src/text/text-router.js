@@ -11,7 +11,7 @@ const jsonParser = express.json();
 const nexmo = new Nexmo({
     apiKey: config.NEXMO_API_KEY,
     apiSecret: config.NEXMO_API_SECRET
-}, NODE_ENV !== 'production' && { debug: true })
+}, { debug: true })
 
 textRouter
     .post('/', jsonParser, (req, res, next) => {
