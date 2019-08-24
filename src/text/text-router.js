@@ -10,10 +10,13 @@ const { createRoomName } = require('../../functions')
 const textRouter = express.Router()
 const jsonParser = express.json();
 
+const NEXMO_API_KEY = process.env.NEXMO_API_KEY;
+const NEXMO_API_SECRET = process.env.NEXMO_API_SECRET;
+
 const nexmo = new Nexmo({
-    apiKey: config.NEXMO_API_KEY,
-    apiSecret: config.NEXMO_API_SECRET
-})
+    apiKey: NEXMO_API_KEY,
+    apiSecret: NEXMO_API_SECRET,
+}, {debug: true});
 
 textRouter
     .post('/', jsonParser, (req, res, next) => {
