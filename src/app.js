@@ -17,6 +17,11 @@ const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const UserService = require('./users/users-service')
 
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // Configure the local strategy for use by Passport.
 //
@@ -26,12 +31,19 @@ const UserService = require('./users/users-service')
 // will be set at `req.user` in route handlers after authentication.
 passport.use(new Strategy(
   function(username, password, cb) {
-    UserService.getUserByUsername(username, function(err, user) {
-      if (err) { return cb(err); }
-      if (!user) { return cb(null, false); }
-      if (user.password != password) { return cb(null, false); }
-      return cb(null, user);
-    });
+    UserService.getUserByUsername(username) 
+      .then(user => {
+          if (!user) { return cb(null, false); }
+          //if user found, compare password using bcrypt
+          bcrypt.compare(password, user.password).then(function(isSamePassword) {
+            if (!isSamePassword) { return cb(null, false) }
+            else { return cb(null, user) }
+          });
+          
+      })
+      .catch(err => {
+        cb(err)
+      })
   }));
 
 
@@ -47,10 +59,14 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(id, cb) {
-    UserService.getById(id, function (err, user) {
-    if (err) { return cb(err); }
-    cb(null, user);
-  });
+    UserService.getById(id)
+      .then(user => {
+        if (err) { cb(err) }
+        //cb(null, user);
+    })
+    .catch(err => {
+      cb(err)
+    })
 });
 
 
