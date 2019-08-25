@@ -21,10 +21,7 @@ const morganOption = (NODE_ENV === 'production')
   : 'common';
 
 app.use(morgan(morganOption))
-app.use(cors({
-    origin: '*',
-    credentials: true
-}))
+app.use(cors())
 app.use(helmet())
 app.use(fileUpload())
 app.use(cookieParser(process.env.COOKIE_SECRET))
