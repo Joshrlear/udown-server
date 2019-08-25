@@ -148,7 +148,7 @@ app.use('/home', homeRouter)
     // res.render('login');
   }); */
   
-app.post('/login', 
+app.post('/login', (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) { return res.status(401).json(); }
@@ -157,6 +157,7 @@ app.post('/login',
       return res.json({"user_id": user.id, "username": user.username});
     });
   })
+  }
 );
 
   app.get('/logout',
