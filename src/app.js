@@ -17,6 +17,8 @@ const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const UserService = require('./users/users-service')
 
+const app = express();
+
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
@@ -31,7 +33,8 @@ app.use(passport.session());
 // will be set at `req.user` in route handlers after authentication.
 passport.use(new Strategy(
   function(username, password, cb) {
-    UserService.getUserByUsername(username) 
+    const knex = app.get('db')
+    UserService.getUserByUsername(knex, username) 
       .then(user => {
           if (!user) { return cb(null, false); }
           //if user found, compare password using bcrypt
@@ -59,21 +62,16 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(id, cb) {
-    UserService.getById(id)
-      .then(user => {
-        if (err) { cb(err) }
-        //cb(null, user);
-    })
-    .catch(err => {
-      cb(err)
-    })
+  const knex = app.get('db')
+  //const field = "*"
+  UserService.getUserById(knex, id)
+    .then(user => {
+      if (user) { cb(null, user) }
+  })
+  .catch(err => {
+    cb(err)
+  })
 });
-
-
-
-
-// Create a new Express application.
-var app = express();
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
@@ -134,8 +132,16 @@ app.use('/home', homeRouter)
 /* app.use('/login', loginRouter) */
 
 app.get('/login',
-  function(req, res){
-    res.render('login');
+  function(req, res, next){
+    passport.authenticate('local', function(err, user, info) {
+      if (err) { return next(err); }
+      if (!user) { return res.status(401).json(); }
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+        return res.json({"user_id": user.id, "username": user.username});
+      });
+    })(req, res, next);
+    // res.render('login');
   });
   
 app.post('/login', 

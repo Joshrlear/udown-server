@@ -29,7 +29,7 @@ const UserService = {
     getById(knex, id, field) {
         return knex
             .from('udown_users')
-            .select({ field })
+            .select("*")
             .where({ id })
             .first()
     },
@@ -40,6 +40,14 @@ const UserService = {
             .select({ field })
             .whereNot({ id })
             .whereNotNull(field)
+    },
+
+    getUserById(knex, id) {
+        return knex
+            .from('udown_users')
+            .select('*')
+            .where({ id })
+            .first()
     },
 
     getUserByUsername(knex, username) {
