@@ -22,7 +22,7 @@ const morganOption = (NODE_ENV === 'production')
 
 app.use(morgan(morganOption))
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://rocky-badlands-82553.herokuapp.com/',
     credentials: true
 }))
 app.use(helmet())
