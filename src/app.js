@@ -17,7 +17,7 @@ const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const UserService = require('./users/users-service')
 
-const app = express();
+const app = express().json();
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
@@ -149,7 +149,9 @@ app.use('/home', homeRouter)
 app.post('/login', (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
-    if (!user) { return res.status(401).json(); }
+    if (!user) { 
+      console.log('hello')
+      return res.status(401).json(); }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
       return res.json({"user_id": user.id, "username": user.username});
