@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const xss = require('xss');
 const uuidv4 = require('uuid/v4');
-const { allowAccess } = require('./middleware')
+//const { allowAccess } = require('./middleware')
 const UserService = require('./users-service');
 const ImageService = require('./images-service');
 
@@ -96,12 +96,27 @@ function readOrEditUser(knex, user_id, userInfo, reqType) {
         
 }
 
+    
+function checkLoggedIn(req, res){
+    res.render('profile', { user: req.user });
+}
+
+
+/* app.get('/',
+  require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res){
+    res.render('profile', { user: req.user });
+  }); */
+
 // edit profile
 profileRouter
     .route('/:user_id')
-    .post(allowAccess, (req, res, next) => {
+    .post(/* allowAccess,  */(req, res, next) => {
+        require('connect-ensure-login').ensureLoggedIn(),
+        checkLoggedIn()
         const userInfo = {'phone_number': req.body.phone}
-        const user_id = req.signedCookies.user_id
+
+        //const user_id = req.signedCookies.user_id
         const image_name = req.files ? req.files.image.name : null
         const image = req.files ? Buffer.from(req.files.image.data).toString('base64') : null
         const newImage = { image, image_name, user_id }
@@ -123,7 +138,9 @@ profileRouter
     // READ: display profile image
 profileRouter
     .route('/:user_id/images')
-    .get(allowAccess, (req, res, next) => {
+    .get(/* allowAccess,  */(req, res, next) => {
+        require('connect-ensure-login').ensureLoggedIn(),
+        checkLoggedIn()
         const user_id = req.headers.user_id
         
         if (!user_id) {
@@ -152,7 +169,9 @@ profileRouter
 
 profileRouter
     .route('/:user_id/:field')
-    .get(allowAccess, (req, res, next) => {
+    .get(/* allowAccess,  */(req, res, next) => {
+        require('connect-ensure-login').ensureLoggedIn(),
+        checkLoggedIn()
         const user_id = req.headers.user_id
         const field = req.headers.field
         const knex = req.app.get('db')
@@ -165,7 +184,9 @@ profileRouter
         
 profileRouter
     .route('/:user_id/others/:field')
-    .get(allowAccess, (req, res, next) => {
+    .get(/* allowAccess,  */(req, res, next) => {
+        require('connect-ensure-login').ensureLoggedIn(),
+        checkLoggedIn()
         const user_id = req.headers.user_id
         const field = req.headers.field
         const knex = req.app.get('db')
@@ -176,4 +197,4 @@ profileRouter
         })
     })
 
-    module.exports = profileRouter
+module.exports = profileRouter

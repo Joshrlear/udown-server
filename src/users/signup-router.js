@@ -41,24 +41,25 @@ signupRouter
                 const knexInstance = req.app.get('db')
 
                 // check valid characters via "xss", encrypt password via "bcrypt"
-                bcrypt.hash(xss(password), 8)
+                //commented out per Anthony
+                //bcrypt.hash(xss(password), 8)
                     .then((hash) => {
                         const user = {
                             username: username,
-                            password: hash
+                            password: password
                         }
 
                         // create new user and return json
                         UserService.createUser(knexInstance, user)
                             .then(user => {
 
-                                const isSecure = req.app.get('env') != 'development'
+                                /*const isSecure = req.app.get('env') != 'development'
 
-                                res.cookie('user_id', user.id, {
+                                 res.cookie('user_id', user.id, {
                                     httpOnly: true,
                                     secure: isSecure,
                                     signed: true
-                                })
+                                }) */
 
                                 res
                                     .status(201)
