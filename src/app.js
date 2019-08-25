@@ -17,7 +17,8 @@ const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const UserService = require('./users/users-service')
 
-const app = express().json();
+const app = express();
+app.use(express.json())
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
