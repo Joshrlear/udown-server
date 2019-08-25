@@ -122,6 +122,7 @@ app.use(fileUpload())
     else { res.json({ 'isLoggedIn': false })}
 }) */
 
+
 app.get('/',
   function(req, res) {
     console.log(req.user)
@@ -131,7 +132,7 @@ app.get('/',
 app.use('/home', homeRouter)
 /* app.use('/login', loginRouter) */
 
-app.get('/login',
+/* app.get('/login',
   function(req, res, next){
     passport.authenticate('local', function(err, user, info) {
       if (err) { return next(err); }
@@ -140,16 +141,23 @@ app.get('/login',
         if (err) { return next(err); }
         return res.json({"user_id": user.id, "username": user.username});
       });
-    })(req, res, next);
+    })
+    .catch(err => {
+      return err
+    })
     // res.render('login');
-  });
+  }); */
   
 app.post('/login', 
-  passport.authenticate('local', { failureRedirect: '/login' }),
-  function(req, res) {
-    console.log(res)
-    res.redirect('/');
-  });
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return next(err); }
+    if (!user) { return res.status(401).json(); }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.json({"user_id": user.id, "username": user.username});
+    });
+  })
+);
 
   app.get('/logout',
   function(req, res){

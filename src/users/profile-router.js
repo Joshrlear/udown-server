@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const xss = require('xss');
 const uuidv4 = require('uuid/v4');
-//const { allowAccess } = require('./middleware')
+const { allowAccess } = require('./middleware')
 const UserService = require('./users-service');
 const ImageService = require('./images-service');
 
@@ -111,7 +111,7 @@ function checkLoggedIn(req, res){
 // edit profile
 profileRouter
     .route('/:user_id')
-    .post(/* allowAccess,  */(req, res, next) => {
+    .post(allowAccess, (req, res, next) => {
         require('connect-ensure-login').ensureLoggedIn(),
         checkLoggedIn()
         const userInfo = {'phone_number': req.body.phone}
@@ -138,7 +138,7 @@ profileRouter
     // READ: display profile image
 profileRouter
     .route('/:user_id/images')
-    .get(/* allowAccess,  */(req, res, next) => {
+    .get(allowAccess, (req, res, next) => {
         require('connect-ensure-login').ensureLoggedIn(),
         checkLoggedIn()
         const user_id = req.headers.user_id
@@ -169,7 +169,7 @@ profileRouter
 
 profileRouter
     .route('/:user_id/:field')
-    .get(/* allowAccess,  */(req, res, next) => {
+    .get(allowAccess, (req, res, next) => {
         require('connect-ensure-login').ensureLoggedIn(),
         checkLoggedIn()
         const user_id = req.headers.user_id
@@ -184,7 +184,7 @@ profileRouter
         
 profileRouter
     .route('/:user_id/others/:field')
-    .get(/* allowAccess,  */(req, res, next) => {
+    .get(allowAccess, (req, res, next) => {
         require('connect-ensure-login').ensureLoggedIn(),
         checkLoggedIn()
         const user_id = req.headers.user_id

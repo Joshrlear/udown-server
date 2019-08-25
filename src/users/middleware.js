@@ -9,12 +9,12 @@ function isLoggedIn(req, res, next) {
 }
 
 function allowAccess(req, res, next) {
-    if (req.signedCookies.user_id == req.params.user_id) {
-        next();
-    }
-    else {
+    if (!req.user.id) {
         res.status(401);
         next(new Error('Un-Authorized'));
+    }
+    else {
+        next();
     }
 }
 
