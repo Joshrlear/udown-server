@@ -21,7 +21,27 @@ const morganOption = (NODE_ENV === 'production')
   : 'common';
 
 app.use(morgan(morganOption))
-app.use(cors())
+
+const whitelist = [
+    'https://udown-client.joshrlear.now.sh/', 
+    'https://joshrlear-udown-client.now.sh/', 
+    'https://udown-client-m1rhfrgv0.now.sh',
+    'https://zeit.co/joshrlear/udown-client/mqnbgdj4b',
+    'https://zeit.co/joshrlear/udown-client/phtqqshgj',
+    'https://zeit.co/joshrlear/udown-client/fngpugudu',
+    'https://zeit.co/joshrlear/udown-client/bg5tw2o3k'
+]
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+app.use(cors(corsOptions))
 app.use(helmet())
 app.use(fileUpload())
 app.use(cookieParser(process.env.COOKIE_SECRET))
