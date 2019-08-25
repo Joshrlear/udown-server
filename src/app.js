@@ -109,7 +109,7 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: false, save
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(helmet())
 app.use(fileUpload())
 //app.use(cookieParser(process.env.COOKIE_SECRET))
