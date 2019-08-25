@@ -156,7 +156,7 @@ app.post('/login', (req, res, next) => {
       if (err) { return next(err); }
       return res.json({"user_id": user.id, "username": user.username});
     });
-  })
+  })(req, res, next);
   }
 );
 
