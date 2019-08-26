@@ -164,7 +164,8 @@ profileRouter
                 if (!image) {
                     console.log('no image :(')
                     return res
-                        .status(201)
+                        .status(204)
+                        .send('no image')
                 }
                 else {
                     return res
