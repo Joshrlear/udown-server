@@ -100,11 +100,6 @@ function readOrEditUser(knex, user_id, userInfo, reqType) {
         
 }
 
-    
-function checkLoggedIn(req, res){
-    return res.render('profile', { user: req.user });
-}
-
 
 /* app.get('/',
   require('connect-ensure-login').ensureLoggedIn(),

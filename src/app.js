@@ -123,12 +123,6 @@ app.use(fileUpload())
 }) */
 
 
-/* app.get('/',
-  function(req, res) {
-    console.log(req.user)
-    res.render('home', { user: req.user });
-  }); */
-
 app.get('/',
   function(req, res) {
     console.log(req.user)
