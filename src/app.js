@@ -43,6 +43,7 @@ passport.use(new Strategy(
           if (!user) { return cb(null, false); }
           //if user found, compare password using bcrypt
           bcrypt.compare(password, user.password).then(function(isSamePassword) {
+            
             if (!isSamePassword) { return cb(null, false) }
             else { 
               console.log('username avaiable', user)
