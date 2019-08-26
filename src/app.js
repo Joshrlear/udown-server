@@ -176,6 +176,7 @@ app.use('/text', textRouter)
 app.use((error, req, res, next) => {
     let response
     if (NODE_ENV === 'production') {
+      console.log('error message on app.js line 179:',error)
         response = { error: { message: 'server error' }}
     } else {
         response = { message: error.message, error }
