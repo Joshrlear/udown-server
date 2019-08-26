@@ -163,6 +163,7 @@ profileRouter
             .then(image => {
                 if (!image) {
                     console.log('no image :(', image)
+                    console.log(serializeImage(image))
                     return res
                         .status(204)
                         .json(serializeImage(image))
