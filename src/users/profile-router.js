@@ -149,9 +149,9 @@ profileRouter
         // doesn't look like this is contributing
         // it is stopping the function, don't want that
         //res.render('profile', { user: req.user })
-        console.log('---------------I keep on working')
+
         const user_id = req.headers.user_id
-        
+        console.log('---------------', user_id)
         if (!user_id) {
             next(new Error('No user id specified'))
         }
@@ -162,10 +162,10 @@ profileRouter
             )
             .then(image => {
                 if (!image) {
-                    console.log('no image :(')
+                    console.log('no image :(', image)
                     return res
                         .status(204)
-                        .send('no image')
+                        .json()
                 }
                 else {
                     return res
