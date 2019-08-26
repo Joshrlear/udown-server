@@ -123,10 +123,16 @@ app.use(fileUpload())
 }) */
 
 
-app.get('/',
+/* app.get('/',
   function(req, res) {
     console.log(req.user)
     res.render('home', { user: req.user });
+  }); */
+
+app.get('/',
+  function(req, res) {
+    console.log(req.user)
+    res.json({ user: req.user });
   });
 
 app.use('/home', homeRouter)
