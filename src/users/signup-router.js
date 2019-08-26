@@ -47,7 +47,7 @@ signupRouter
                         console.log('signup-router line 47, hash', hash)
                         const user = {
                             username: username,
-                            password: password
+                            password: hash
                         }
                         console.log('signup-router line 52, user', user)
 
