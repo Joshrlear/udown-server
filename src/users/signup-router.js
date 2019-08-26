@@ -43,29 +43,24 @@ signupRouter
                 // check valid characters via "xss", encrypt password via "bcrypt"
                 //commented out per Anthony
                 //bcrypt.hash(xss(password), 8)
-                    .then((hash) => {
-                        const user = {
-                            username: username,
-                            password: password
-                        }
 
-                        // create new user and return json
-                        UserService.createUser(knexInstance, user)
-                            .then(user => {
-
-                                /*const isSecure = req.app.get('env') != 'development'
-
-                                 res.cookie('user_id', user.id, {
-                                    httpOnly: true,
-                                    secure: isSecure,
-                                    signed: true
-                                }) */
-
-                                res
-                                    .status(201)
-                                    .json(serializeUser(user))
-                            })
-                })
+                const user = {
+                    username: username,
+                    password: password
+                }
+                // create new user and return json
+                UserService.createUser(knexInstance, user)
+                    .then(user => {
+                        /*const isSecure = req.app.get('env') != 'development'
+                         res.cookie('user_id', user.id, {
+                            httpOnly: true,
+                            secure: isSecure,
+                            signed: true
+                        }) */
+                        res
+                            .status(201)
+                            .json(serializeUser(user))
+                    })
             } 
             else {
                 // user already exists in db

@@ -36,13 +36,17 @@ app.use(passport.session());
 passport.use(new Strategy(
   function(username, password, cb) {
     const knex = app.get('db')
+    console.log('running through passport strategy')
     UserService.getUserByUsername(knex, username) 
       .then(user => {
           if (!user) { return cb(null, false); }
           //if user found, compare password using bcrypt
           bcrypt.compare(password, user.password).then(function(isSamePassword) {
             if (!isSamePassword) { return cb(null, false) }
-            else { return cb(null, user) }
+            else { 
+              console.log('username avaiable', user)
+              return cb(null, user) 
+            }
           });
           
       })
