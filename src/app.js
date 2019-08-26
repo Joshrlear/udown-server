@@ -39,6 +39,7 @@ passport.use(new Strategy(
     console.log('running through passport strategy')
     UserService.getUserByUsername(knex, username) 
       .then(user => {
+        console.log('line 42 app.js', user)
           if (!user) { return cb(null, false); }
           //if user found, compare password using bcrypt
           bcrypt.compare(password, user.password).then(function(isSamePassword) {
