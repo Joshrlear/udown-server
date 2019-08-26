@@ -154,7 +154,9 @@ app.use('/home', homeRouter)
   }); */
   
 app.post('/login', (req, res, next) => {
+  console.log(req.user)
   passport.authenticate('local', function(err, user, info) {
+    console.log(user)
     if (err) { return next(err); }
     if (!user) { 
       console.log('hello')
