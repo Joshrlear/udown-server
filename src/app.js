@@ -16,6 +16,7 @@ const textRouter = require('./text/text-router')
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const UserService = require('./users/users-service')
+const bcrypt = require('bcrypt')
 
 const app = express();
 app.use(express.json())
@@ -161,11 +162,11 @@ app.post('/login', (req, res, next) => {
   }
 );
 
-  app.get('/logout',
-  function(req, res){
-    req.logout();
-    res.redirect('/');
-  });
+app.get('/logout',
+function(req, res){
+  req.logout();
+  res.redirect('/');
+});
 
 /* app.use('/logout', logoutRouter) */
 app.use('/signup', signupRouter)

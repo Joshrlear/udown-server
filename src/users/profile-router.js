@@ -8,7 +8,7 @@ const ImageService = require('./images-service');
 
 const profileRouter = express.Router();
 const { createImage, getImageIdByUser_id, getImageByUser_id, updateImage } = ImageService
-const { getById, getOtherUsersById, updateUser } = UserService
+const { getById, getOtherUsersById, updateUser, getPhoneById } = UserService
 
 const serializeImage = image => ({
     id: image.id,
@@ -19,7 +19,9 @@ const serializeImage = image => ({
 
 // upload image
 function readOrEditImage(knex, user_id, newImage) {
+    console.log('-b-b-b-b- readOrEditImage')
     if (newImage.image) {
+        console.log('jjjjjj----- has new image')
         const promise = Promise.resolve(getImageIdByUser_id(knex, user_id))
         promise.then(result => {
             
@@ -46,8 +48,10 @@ function readOrEditImage(knex, user_id, newImage) {
 
 // upload phone
 function readOrEditUser(knex, user_id, userInfo, reqType) {
+    console.log('-%%%%%---- readOrEditUser')
     if (reqType === 'update') {
         if (userInfo !== null) {
+            console.log('ppppppdpdpd----- has usewInfo!')
             getById(knex, user_id, 'phone_number')
                 .then(result => {
                     updateUser(knex, user_id, userInfo)
@@ -98,7 +102,7 @@ function readOrEditUser(knex, user_id, userInfo, reqType) {
 
     
 function checkLoggedIn(req, res){
-    res.render('profile', { user: req.user });
+    return res.render('profile', { user: req.user });
 }
 
 
@@ -112,11 +116,14 @@ function checkLoggedIn(req, res){
 profileRouter
     .route('/:user_id')
     .post(allowAccess, (req, res, next) => {
-        require('connect-ensure-login').ensureLoggedIn(),
-        checkLoggedIn()
+        console.log('profile/:user_id firing')
+        require('connect-ensure-login').ensureLoggedIn()
+        console.log('passing ensureLogin **********')
+        //checkLoggedIn()
         const userInfo = {'phone_number': req.body.phone}
+        console.log('*********$*$*$*$**$*$', userInfo)
 
-        //const user_id = req.signedCookies.user_id
+        const user_id = req.headers.user_id
         const image_name = req.files ? req.files.image.name : null
         const image = req.files ? Buffer.from(req.files.image.data).toString('base64') : null
         const newImage = { image, image_name, user_id }
@@ -124,23 +131,30 @@ profileRouter
 
         // nothing to submit
        if (!image && !userInfo.phone_number) {
+           console.log('^^^^^^^^^^^^^^No image and no phone_number')
             next(new Error('no new info supplied'))
         }
 
         else {
-            
+            console.log('TTTTTTTTTTTTT Running read/edit methods')
             Promise.resolve(readOrEditImage(knex, user_id, newImage))
             Promise.resolve(readOrEditUser(knex, user_id, userInfo, 'update'))
         }
+        console.log('returning user data for EditProfile')
         return res.json()
     })
 
     // READ: display profile image
 profileRouter
     .route('/:user_id/images')
-    .get(allowAccess, (req, res, next) => {
-        require('connect-ensure-login').ensureLoggedIn(),
-        checkLoggedIn()
+    .get((req, res, next) => {
+        console.log('profile/:user_id/images firing')
+        require('connect-ensure-login').ensureLoggedIn()
+        console.log('---------------still working')
+        // doesn't look like this is contributing
+        // it is stopping the function, don't want that
+        //res.render('profile', { user: req.user })
+        console.log('---------------I keep on working')
         const user_id = req.headers.user_id
         
         if (!user_id) {
@@ -170,14 +184,17 @@ profileRouter
 profileRouter
     .route('/:user_id/:field')
     .get(allowAccess, (req, res, next) => {
-        require('connect-ensure-login').ensureLoggedIn(),
-        checkLoggedIn()
+        console.log('profile/:user_id/:field firing')
+        require('connect-ensure-login').ensureLoggedIn()
+        //checkLoggedIn()
         const user_id = req.headers.user_id
         const field = req.headers.field
         const knex = req.app.get('db')
+        console.log('id, field', user_id, field)
         
-        const result = Promise.resolve(getById(knex, user_id, field))
-        result.then(data => { 
+        const result = Promise.resolve(getPhoneById(knex, user_id, field))
+        result.then(data => {
+            console.log('returning data:', data)
             return res.send(data) 
         })
     })
@@ -185,14 +202,16 @@ profileRouter
 profileRouter
     .route('/:user_id/others/:field')
     .get(allowAccess, (req, res, next) => {
-        require('connect-ensure-login').ensureLoggedIn(),
-        checkLoggedIn()
+        console.log('profile/:user_id/others/:field firing')
+        require('connect-ensure-login').ensureLoggedIn()
+        //checkLoggedIn()
         const user_id = req.headers.user_id
         const field = req.headers.field
         const knex = req.app.get('db')
         
         const result = Promise.resolve(getOtherUsersById(knex, user_id, field))
-        result.then(data => { 
+        result.then(data => {
+            console.log('returning data:', data)
             return res.send(data) 
         })
     })

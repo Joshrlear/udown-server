@@ -34,6 +34,14 @@ const UserService = {
             .first()
     },
 
+    getPhoneById(knex, id, field) {
+        return knex
+            .from('udown_users')
+            .select({ field })
+            .where({ id })
+            .first()
+    },
+
     getOtherUsersById(knex, id, field) {
         return knex
             .from('udown_users')

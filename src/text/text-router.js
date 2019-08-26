@@ -47,7 +47,7 @@ textRouter
                         id: responseData.messages[0]['message-id'],
                         userPhone: responseData.messages[0]['to']
                     }
-                    if(!res.headersSent) res.json(data)
+                    if(!res.headersSent) return res.json(data)
                 }
             }
         )
