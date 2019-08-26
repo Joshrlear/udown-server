@@ -177,7 +177,7 @@ app.use((error, req, res, next) => {
     let response
     if (NODE_ENV === 'production') {
       console.log('error message on app.js line 179:',error)
-        response = { error: { message: 'server error' }}
+        response = { error: { message: 'server error here app.js line 180' }}
     } else {
         response = { message: error.message, error }
     }
