@@ -1,6 +1,6 @@
 const knex = require('knex')
 const app = require('./app')
-const server = require('http').Server(app)
+const server = require('https').Server(app)
 const io = require('socket.io').listen(server)
 const uuid = require('uuid/v4')
 
