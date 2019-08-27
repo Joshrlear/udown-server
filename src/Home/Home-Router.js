@@ -26,7 +26,7 @@ homeRouter
         const location = "32.8180,-117.0560"
         const radius = 24000
         request({
-            uri: `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&location=${location}&radius=${radius}&key=${process.env.GOOGLE_MAPS_API_KEY}`,
+            uri: `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&location=${location}&radius=${radius}&key=${process.env.GOOGLE_PLACES_API}`,
         })
         .pipe(res)
     })
