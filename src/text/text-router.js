@@ -25,7 +25,7 @@ textRouter
         const { username, location, userPhones } = req.body
         const roomName = createRoomName()
         const number = userPhones
-        const text = `${username} is inviting you to join their event at ${location}. Use the link to join! https://udown-client.joshrlear.now.sh/${roomName}`
+        const text = `${username} is inviting you to join their event at ${location}. Use the link to join! https://udown-client.joshrlear.now.sh/${roomName} `
 
         res.json({ username, roomName })
 
