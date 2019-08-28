@@ -35,7 +35,8 @@ io.on('connection', socket => {
     //io.to(data.room).emit(`Chat started for:\n${data.loc.name}\n${data.loc.address}`)
   })
   
-  socket.on('chat_message', ({ room, message }) => {
+  socket.on('chat_message', ({ room, username, message }) => {
+    console.log('---------->>>>------.-.-.-.-.-.- username:', username)
     console.log('---------->>>>------.-.-.-.-.-.- message:', message)
     socket.broadcast.emit('chat_message',{
       message
