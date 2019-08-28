@@ -36,6 +36,8 @@ io.on('connection', socket => {
   })
   
   socket.on('chat_message', ({ room, username, message }) => {
+    console.log('---------->>>>------.-.-.-.-.-.- username:', username)
+    console.log('---------->>>>------.-.-.-.-.-.- message:', message)
     socket.broadcast.emit('chat_message',{
       username, 
       message
