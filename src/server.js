@@ -36,7 +36,7 @@ io.on('connection', socket => {
   })
   
   socket.on('chat_message', ({ room, username, message }) => {
-    socket.to('viral-III-35').emit('chat_message', {
+    socket.to(room).emit('chat_message', {
       username,
       message,
     })
