@@ -29,7 +29,7 @@ textRouter
 
         users.map(user => {
             nexmo.message.sendSms(
-                NEXMO_FROM_NUMBER, `1${user.phone}`, `${text}${user.user_id}- .`, { type: 'unicode' },
+                NEXMO_FROM_NUMBER, `1${user.phone}`, `${text}${user.username}- .`, { type: 'unicode' },
             (err, responseData) => {
                 if (err) {
                     console.log(err)
