@@ -45,7 +45,7 @@ const UserService = {
     getOtherUsersById(knex, id, field) {
         return knex
             .from('udown_users')
-            .select({ field })
+            .select('*')
             .whereNot({ id })
             .whereNotNull(field)
     },

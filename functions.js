@@ -1,6 +1,6 @@
 const faker = require('faker')
 
-function createRoomName() {
+function createRoomName(user_id) {
     const beginning = [
         faker.hacker.ingverb(),
         faker.hacker.verb(),
@@ -26,12 +26,12 @@ function createRoomName() {
     ]
 
     const i = Math.floor(Math.random() * 9)
-    const randomNum = Math.floor(Math.random()*1000)
+    //const randomNum = Math.floor(Math.random()*1000)
 
     // remove white space/replace with '-' and '.'/replace with ''
     const chatRoomName = `${beginning[i].toString().replace(/\s/g,"-").replace(/\./g,"")
                         }-${end[i].toString().replace(/\s/g,"-").replace(/\./g,"")
-                        }-${randomNum}`
+                        }-`
         return chatRoomName
 }
 

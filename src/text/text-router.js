@@ -21,18 +21,15 @@ const nexmo = new Nexmo({
 
 textRouter
     .post('/', jsonParser, (req, res, next) => {
-
-        const { username, location, userPhones } = req.body
+        const { username, location, users } = req.body
         const roomName = createRoomName()
-        const number = userPhones
-        const text = `${username} is inviting you to join their event at ${location}. Use the link to join! https://udown-client.joshrlear.now.sh/chat/${roomName} .`
+        const text = `${username} is inviting you to join their event at ${location}. Use the link to join! https://udown-client.joshrlear.now.sh/chat/${roomName}`
 
         res.json({ username, roomName })
 
-
-        number.map(userPhone => {
+        users.map(user => {
             nexmo.message.sendSms(
-                NEXMO_FROM_NUMBER, `1${userPhone}`, text, { type: 'unicode' },
+                NEXMO_FROM_NUMBER, `1${user.phone}`, `${text}${user.user_id}- .`, { type: 'unicode' },
             (err, responseData) => {
                 if (err) {
                     console.log(err)

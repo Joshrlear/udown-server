@@ -87,7 +87,7 @@ const morganOption = (NODE_ENV === 'production')
 
 app.use(morgan(morganOption))
 
-const whitelist = [
+/* const whitelist = [
     'https://udown-client.joshrlear.now.sh/', 
     'https://joshrlear-udown-client.now.sh/', 
     'https://udown-client-m1rhfrgv0.now.sh',
@@ -105,7 +105,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'))
     }
   }
-}
+} */
 
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
@@ -118,16 +118,6 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: false, save
 app.use(cors())
 app.use(helmet())
 app.use(fileUpload())
-//app.use(cookieParser(process.env.COOKIE_SECRET))
-
-
-/* app.use('/isLoggedIn', (req, res, next) => {
-    if (req.signedCookies.user_id == req.headers.user_id) {
-        res.json({ 'isLoggedIn': true })
-    }
-    else { res.json({ 'isLoggedIn': false })}
-}) */
-
 
 app.get('/',
   function(req, res) {
@@ -136,23 +126,6 @@ app.get('/',
   });
 
 app.use('/home', homeRouter)
-/* app.use('/login', loginRouter) */
-
-/* app.get('/login',
-  function(req, res, next){
-    passport.authenticate('local', function(err, user, info) {
-      if (err) { return next(err); }
-      if (!user) { return res.status(401).json(); }
-      req.logIn(user, function(err) {
-        if (err) { return next(err); }
-        return res.json({"user_id": user.id, "username": user.username});
-      });
-    })
-    .catch(err => {
-      return err
-    })
-    // res.render('login');
-  }); */
   
 app.post('/login', (req, res, next) => {
   console.log(req.user)
@@ -176,9 +149,8 @@ function(req, res){
   res.redirect('/');
 });
 
-/* app.use('/logout', logoutRouter) */
 app.use('/signup', signupRouter)
-app.use('/profile', /* isLoggedIn ,*/ profileRouter)
+app.use('/profile', profileRouter)
 app.use('/text', textRouter)
 
 app.use((error, req, res, next) => {
