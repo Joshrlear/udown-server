@@ -48,9 +48,7 @@ function readOrEditUser(knex, user_id, userInfo, reqType) {
             getById(knex, user_id, 'phone_number')
                 .then(result => {
                     updateUser(knex, user_id, userInfo)
-                        .then(data => {
-                            console.log(data)
-                        })
+
 
                 })
                 .then(res => {
@@ -92,13 +90,6 @@ function readOrEditUser(knex, user_id, userInfo, reqType) {
     }
         
 }
-
-
-/* app.get('/',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    res.render('profile', { user: req.user });
-  }); */
 
 // edit profile
 profileRouter

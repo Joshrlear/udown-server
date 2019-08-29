@@ -2,7 +2,6 @@ const knex = require('knex')
 const app = require('./app')
 const server = require('http').Server(app)
 const io = require('socket.io').listen(server)
-const uuid = require('uuid/v4')
 
 const { PORT, DB_URL } = require('./config')
 
@@ -14,17 +13,17 @@ const db = knex({
 app.set('db', db)
 
 server.listen(PORT, () => {
-    console.log(`Server listening at http://localhost:${PORT}`)
+    console.log(`Server listening at PORT:${PORT}`)
   })
 
 io.on('connection', socket => {
   
   socket.on('join_room', data => {
-    console.log(`joining chat at: ${data.room}`)
+ 
 
     // it's looping through twice for some reason
     socket.join(data.room, () => {
-      console.log('user: ', data.user)
+
       io.to(data.room).emit(`${data.username} has joined`)
     })
     // I want to display location name and address
@@ -36,8 +35,7 @@ io.on('connection', socket => {
   })
   
   socket.on('chat_message', ({ room, username, message }) => {
-    console.log('---------->>>>------.-.-.-.-.-.- username:', username)
-    console.log('---------->>>>------.-.-.-.-.-.- message:', message)
+
     socket.broadcast.emit('chat_message',{
       username,
       message
@@ -51,5 +49,5 @@ io.on('connection', socket => {
   socket.on('typing', user => {
     socket.broadcast.emit('typing', user)
   })
-  console.log(`Chat Server listening at http://localhost:${PORT}`)
+  console.log(`Chat Server listening at PORT:${PORT}`)
 })

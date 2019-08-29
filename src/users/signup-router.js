@@ -44,12 +44,10 @@ signupRouter
                 //commented out per Anthony
                 bcrypt.hash(xss(password), 8)
                     .then((hash) => {
-                        console.log('signup-router line 47, hash', hash)
                         const user = {
                             username: username,
                             password: hash
                         }
-                        console.log('signup-router line 52, user', user)
 
                         // create new user and return json
                         UserService.createUser(knexInstance, user)

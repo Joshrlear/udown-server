@@ -36,17 +36,14 @@ app.use(passport.session());
 passport.use(new Strategy(
   function(username, password, cb) {
     const knex = app.get('db')
-    console.log('running through passport strategy')
     UserService.getUserByUsername(knex, username) 
       .then(user => {
-        console.log('line 42 app.js', user)
           if (!user) { return cb(null, false); }
           //if user found, compare password using bcrypt
           bcrypt.compare(password, user.password).then(function(isSamePassword) {
             
             if (!isSamePassword) { return cb(null, false) }
             else { 
-              console.log('username avaiable', user)
               return cb(null, user) 
             }
           });
@@ -121,19 +118,15 @@ app.use(fileUpload())
 
 app.get('/',
   function(req, res) {
-    console.log(req.user)
     res.json({ user: req.user });
   });
 
 app.use('/home', homeRouter)
   
 app.post('/login', (req, res, next) => {
-  console.log(req.user)
   passport.authenticate('local', function(err, user, info) {
-    console.log(user)
     if (err) { return next(err); }
     if (!user) { 
-      console.log('hello')
       return res.status(401).json(); }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
@@ -156,8 +149,7 @@ app.use('/text', textRouter)
 app.use((error, req, res, next) => {
     let response
     if (NODE_ENV === 'production') {
-      console.log('error message on app.js line 179:',error)
-        response = { error: { message: 'server error here app.js line 180' }}
+        response = { error: { message: 'server error here app.js line 180:', error }}
     } else {
         response = { message: error.message, error }
     }
