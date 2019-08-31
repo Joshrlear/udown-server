@@ -19,7 +19,7 @@ function readOrEditImage(knex, user_id, newImage) {
     if (newImage.image) {
         const promise = Promise.resolve(getImageIdByUser_id(knex, user_id))
         promise.then(result => {
-            
+
             // image exists. will update with new
             if (result !== undefined) {
                 const id = result.id
@@ -48,8 +48,6 @@ function readOrEditUser(knex, user_id, userInfo, reqType) {
             getById(knex, user_id, 'phone_number')
                 .then(result => {
                     updateUser(knex, user_id, userInfo)
-
-
                 })
                 .then(res => {
                     if(!res.ok) {
@@ -102,7 +100,7 @@ profileRouter
         const image = req.files ? Buffer.from(req.files.image.data).toString('base64') : null
         const newImage = { image, image_name, user_id }
         const knex = req.app.get('db')
-
+        console.log('---------------- user_id and field:', user_id, userInfo)
         // nothing to submit
        if (!image && !userInfo.phone_number) {
             next(new Error('no new info supplied'))
@@ -115,7 +113,7 @@ profileRouter
         return res.json()
     })
 
-    // READ: display profile image
+    // display profile image
 profileRouter
     .route('/:user_id/images')
     .get((req, res, next) => {

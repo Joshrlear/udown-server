@@ -69,7 +69,10 @@ signupRouter
             } 
             else {
                 // user already exists in db
-                next(new Error('Username in use'))
+                return res
+                    .status(409)
+                    .json({message: 'username already in use'})
+                //next(new Error('Username in use'))
             }
         })
         .catch(next)

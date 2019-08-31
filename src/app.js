@@ -3,12 +3,8 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
-//const cookieParser = require('cookie-parser')
 const { NODE_ENV } = require('./config')
 const fileUpload = require('express-fileupload');
-//const { isLoggedIn } = require('./users/middleware')
-//const loginRouter = require('./users/login-router')
-//const logoutRouter = require('./users/logout-router')
 const signupRouter = require('./users/signup-router')
 const profileRouter = require('./users/profile-router')
 const homeRouter = require('./Home/Home-Router')
@@ -68,7 +64,6 @@ passport.serializeUser(function(user, cb) {
 
 passport.deserializeUser(function(id, cb) {
   const knex = app.get('db')
-  //const field = "*"
   UserService.getUserById(knex, id)
     .then(user => {
       if (user) { cb(null, user) }
@@ -83,26 +78,6 @@ const morganOption = (NODE_ENV === 'production')
   : 'common';
 
 app.use(morgan(morganOption))
-
-/* const whitelist = [
-    'https://udown-client.joshrlear.now.sh/', 
-    'https://joshrlear-udown-client.now.sh/', 
-    'https://udown-client-m1rhfrgv0.now.sh',
-    'https://zeit.co/joshrlear/udown-client/mqnbgdj4b',
-    'https://zeit.co/joshrlear/udown-client/phtqqshgj',
-    'https://zeit.co/joshrlear/udown-client/fngpugudu',
-    'https://zeit.co/joshrlear/udown-client/bg5tw2o3k',
-    'http://localhost:3000'
-]
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-} */
 
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
@@ -125,9 +100,10 @@ app.use('/home', homeRouter)
   
 app.post('/login', (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err); }
-    if (!user) { 
-      return res.status(401).json(); }
+    if (err) { 
+      return next(err); }
+    if (!user) {
+      return res.status(401).json({errorMsg: 'Invalid login'}); }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
       return res.json({"user_id": user.id, "username": user.username});
@@ -139,7 +115,6 @@ app.post('/login', (req, res, next) => {
 app.get('/logout',
 function(req, res){
   req.logout();
-  res.redirect('/');
 });
 
 app.use('/signup', signupRouter)

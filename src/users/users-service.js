@@ -72,6 +72,9 @@ const UserService = {
             .from('udown_users')
             .where({ id })
             .update(newUserField)
+            .then(rows => {
+                return rows[0]
+            })
     },
 
     // Delete
