@@ -99,12 +99,16 @@ app.get('/',
 app.use('/home', homeRouter)
   
 app.post('/login', (req, res, next) => {
+  console.log ('------------------------------login request:', req)
   passport.authenticate('local', function(err, user, info) {
-    if (err) { 
+    if (err) {
+      console.log ('------------------------------login error:', err)
       return next(err); }
     if (!user) {
+      console.log ('------------------------------user not found:')
       return res.status(401).json({errorMsg: 'Invalid login'}); }
     req.logIn(user, function(err) {
+      console.log ('------------------------------user found:', user)
       if (err) { return next(err); }
       return res.json({"user_id": user.id, "username": user.username});
     });
