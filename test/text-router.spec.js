@@ -1,5 +1,6 @@
 const knex = require('knex')
-const request = require('supertest');
+const request = require('supertest')
+const app = require('../src/app')
 
 describe('test text-router', () => {
 
@@ -16,40 +17,17 @@ describe('test text-router', () => {
     const reqBody = { 
         'username': 'testuser', 
         'location': 'Test Location',
-        'userPhones': [16195076807,16199161504]
-    }
-
-    const badReqBody = { 
-        'username': 'testuser', 
-        'location': 'Test Location'
+        'users': [16195076809,16199161508]
     }
   
-    it('responds with json object regardless of status', () => {
-      request(app)
+    it('responds with json object and status 200', () => {
+      return request(app)
         .post(`/text`)
         .send(reqBody)
         .expect('Content-Type', /json/)
         .expect(res => {
           expect(res.body).to.be.an('object')
+          expect(200)
         })
     });
-
-    it('responds with error given no user phones', () => {
-      request(app)
-        .post('/text')
-        .send(badReqBody)
-        .catch(error => {
-          expect(error).to.have.deep.property('text');
-          done();
-        })
-    })
-  
-    it('responds with error given no user_id', () => {
-      request(app)
-        .post('/text')
-        .catch(error => {
-          expect(error).to.have.deep.property('text');
-          done();
-        })
-    })
   });

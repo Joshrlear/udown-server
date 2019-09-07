@@ -93,14 +93,14 @@ function readOrEditUser(knex, user_id, userInfo, reqType) {
 profileRouter
     .route('/:user_id')
     .post(allowAccess, (req, res, next) => {
-        require('connect-ensure-login').ensureLoggedIn()
+        if(!require('connect-ensure-login').ensureLoggedIn()){ return res.status(400).json({ message: 'unauthorized' })}
         const userInfo = {'phone_number': req.body.phone}
         const user_id = req.headers.user_id
         const image_name = req.files ? req.files.image.name : null
         const image = req.files ? Buffer.from(req.files.image.data).toString('base64') : null
         const newImage = { image, image_name, user_id }
         const knex = req.app.get('db')
-        console.log('---------------- user_id and field:', user_id, userInfo)
+
         // nothing to submit
        if (!image && !userInfo.phone_number) {
             next(new Error('no new info supplied'))

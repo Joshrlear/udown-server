@@ -27,27 +27,32 @@ textRouter
 
         res.json({ username, roomName })
 
-        users.map(user => {
-            nexmo.message.sendSms(
-                NEXMO_FROM_NUMBER, `1${user.phone}`, `${text}${user.username}- .`, { type: 'unicode' },
-            (err, responseData) => {
-                if (err) {
-                    console.log(err)
-                    next(err)
-                }
-                else {
-                    console.log('message sent successfully to: ', responseData.messages[0].to)
-
-                    // send data to client
-                    const data = {
-                        id: responseData.messages[0]['message-id'],
-                        userPhone: responseData.messages[0]['to']
+        if(users.length == 0) {
+            return res.status(400)
+        }
+        else {
+            users.map(user => {
+                nexmo.message.sendSms(
+                    NEXMO_FROM_NUMBER, `1${user.phone}`, `${text}${user.username}- .`, { type: 'unicode' },
+                (err, responseData) => {
+                    if (err) {
+                        console.log(err)
+                        next(err)
                     }
-                    if(!res.headersSent) return res.json(data)
+                    else {
+                        console.log('message sent successfully to: ', responseData.messages[0].to)
+    
+                        // send data to client
+                        const data = {
+                            id: responseData.messages[0]['message-id'],
+                            userPhone: responseData.messages[0]['to']
+                        }
+                        if(!res.headersSent) return res.json(data)
+                    }
                 }
-            }
-        )
-        })
+            )
+            })
+        }
     })
 
 module.exports = textRouter

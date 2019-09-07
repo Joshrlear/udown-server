@@ -8,7 +8,7 @@ const signupRouter = express.Router();
 const jsonParser = express.json();
 
 const serializeUser = user => ({
-    id: user.id,
+    user_id: user.id,
     username: xss(user.username),
     password: user.password,
     phone_number: xss(user.phone_number),

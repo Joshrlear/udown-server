@@ -18,14 +18,10 @@ describe('POST /', () => {
       password: 'password'
   }
 
-  it('responds with json object and status 200', (done) => {
-    request(app)
+  it('responds with json object and status 200', () => {
+    return request(app)
       .post(`/login`)
       .send(newUser)
       .expect('Content-Type', /json/)
-      .expect(res => {
-        expect(res.body).to.be.an('object')
-      })
-      setTimeout(done, 0)
   });
 });

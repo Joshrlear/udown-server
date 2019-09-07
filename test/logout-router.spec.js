@@ -13,13 +13,9 @@ describe('GET /', () => {
     app.set('db', db)
   })
 
-  it('responds with json object and status 200', (done) => {
+  it('responds with json object and status 200', () => {
     request(app)
       .get(`/logout`)
       .expect('Content-Type', /json/)
-      .expect(res => {
-        expect(res.body).to.be.an('object')
-      })
-      setTimeout(done, 0)
   });
 });
