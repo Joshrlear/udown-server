@@ -115,6 +115,7 @@ app.post('/login', (req, res, next) => {
 app.get('/logout',
 function(req, res){
   req.logout();
+  res.redirect('/')
 });
 
 app.use('/signup', signupRouter)

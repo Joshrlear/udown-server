@@ -1,34 +1,50 @@
-# Express Boilerplate!
+# udown server-side
+udown, create spontaneous events with locals.
+Live site: https://udown-client.joshrlear.now.sh/
 
-This is a boilerplate project used for starting new projects!
+### Why I created udown
+“Originally, I wanted to play tennis 
+with someone near me. Not knowing
+anyone who played, I was forced
+to use things like meetups and
+facebook groups.
+
+Meetups are great for people who
+love scheduling their lives a 
+month out, but that’s just not 
+me. Facebook groups are good
+for finding people with similar
+interest to chat with but it lacks
+the push you sometimes need
+to actually go do these things
+with strangers, you know? 
+Also, there’s no garauntee that 
+these people are near you.
+
+So much technology has been
+created to bring us together 
+online but there really isn’t 
+anything that brings us 
+together in the real world... 
+so I built it.”
+
+### How does udown work?
+Currently, the app is limited to login/signup auth using passport, searching query with google maps and places api, viewing info on locations based on query and which marker the user clicked on, sending text notifications to invite users to join their event using nexmo api and finally, a chat feature that allows users to chat in real-time using socket.io.
+
+The Basic functionality is there but I am currently working hard to improve loading speeds, customizations and features, as well as animations and design.
+
+See this short video that shows a demo of login, query search and display, sending texts and the chat functionality: https://youtu.be/B_JTZHo4pgs
 
 
-## Set up
+#### Current status
+deployed in beta v1.0
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
-
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-
-2. `cd` into the cloned repository
-
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-
-4. Install the node dependencies `npm install`
-
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
-
-
-## Scripts
-
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
-
-Run the tests `npm test`
-
-
-## Deploying
-
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+#### API/Packages/Frameworks used
+language: javascript
+styling: scss
+Front-end: React
+Back-end: Nodejs, express
+Database: PostgreSQL, knex
+Platform: Heroku, zeit
+other notable packages and api:
+Google maps/places API, Nexmo API, socket.io, passport to name a few.
