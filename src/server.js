@@ -49,5 +49,4 @@ io.on('connection', socket => {
   socket.on('typing', user => {
     socket.broadcast.emit('typing', user)
   })
-  console.log(`Chat Server listening at PORT:${PORT}`)
 })
